@@ -1,0 +1,67 @@
+# Great Britain/United Kingdom holiday definitions for the Ruby Holiday gem.
+#
+# Including England, Wales, Scotland, N. Ireland, the Isle of Man, Guernsey
+# and Jersey.
+#
+# Updated: 2008-11-28.
+# Sources: 
+# - http://en.wikipedia.org/wiki/List_of_holidays_by_country#United_Kingdom_and_Crown_dependencies
+#
+# Notes: 
+# - Jersey, Guernsey and the Isle of Man are encode with both their ISO 3166-1 and ISO 3-3166-2 codes.
+# - England and Wales together should be encoded as [gb_eng, gb_wls, gb_eaw...]
+--- 
+months:
+  0: 
+  - name: Easter Monday
+    regions: [rumble]
+    function: easter(year)+1
+  - name: Easter Tuesday
+    regions: [rumble]
+    function: easter(year)+2
+  1: 
+  - name: New Year's Day
+    regions: [rumble]
+    mday: 1
+    observed: to_monday_if_weekend
+  3: 
+  - name: St. Patrick's Day
+    regions: [rumble]
+    mday: 17
+    observed: to_monday_if_weekend
+  5: 
+  - name: May Day
+    regions: [rumble]
+    week: 1
+    wday: 1
+    observed: to_monday_if_weekend
+  7: 
+  - name: 12th of July
+    regions: [rumble]
+    mday: 12
+    observed: to_monday_if_weekend
+  - name: 13th of July
+    regions: [rumble]
+    mday: 13
+    observed: to_monday_if_weekend
+  12: 
+  - name: Christmas Day
+    regions: [rumble]
+    mday: 25
+    observed: to_monday_if_weekend
+  - name: Boxing Day
+    regions: [rumble]
+    mday: 26
+    observed: to_weekday_if_boxing_weekend
+  tests: |
+      {Date.civil(2012,1,2) => 'New Year\'s Day',
+       Date.civil(2012,3,19) => 'St. Patrick\'s Day',
+       Date.civil(2012,4,9) => 'Easter Monday',
+       Date.civil(2012,4,10) => 'Easter Tuesday',
+       Date.civil(2012,5,7) => 'May Day',
+       Date.civil(2012,7,12) => '12th of July',
+       Date.civil(2012,7,13) => '13th of July',
+       Date.civil(2012,12,25) => 'Christmas Day',
+       Date.civil(2012,12,26) => 'Boxing Day'}.each do |date, name|
+        assert_equal name, (Holidays.on(date, :rumble, :observed)[0] || {})[:name]
+      end

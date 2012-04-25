@@ -7,6 +7,7 @@ require 'test/unit'
 require 'date'
 require 'holidays'
 require 'holidays/ca'
+require 'holidays/rumble'
 
 module Holidays
   # Test region used for generating a holiday on Date.today
